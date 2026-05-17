@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@700&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0a0a0a;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 120px 160px;
+      }
+
+      /* Scene 1 (Red) */
+      #scene1 {
+        z-index: 1;
+        background: #E63946;
+        color: #0a0a0a;
+      }
+
+      /* Scene 2 (Yellow) */
+      #scene2 {
+        z-index: 2;
+        background: #FFD60A;
+        color: #0a0a0a;
+        opacity: 0;
+      }
+
+      /* Scene 3 (Black) */
+      #scene3 {
+        z-index: 3;
+        background: #0a0a0a;
+        color: #ffffff;
+        opacity: 0;
+      }
+
+      .headline {
+        font-family: 'Anton', sans-serif;
+        font-size: 16rem;
+        line-height: 0.9;
+        text-transform: uppercase;
+        margin-bottom: -20px;
+      }
+
+      .subhead {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 4rem;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
+      /* Invert subhead colors for visibility */
+      #scene2 .subhead {
+        color: #0a0a0a;
+      }
+      #scene3 .subhead {
+        color: #E63946;
+      }
+      
+      .decorative-bar {
+        position: absolute;
+        bottom: 120px;
+        left: 160px;
+        height: 24px;
+        background: #0a0a0a;
+        width: 400px;
+      }
+      #scene2 .decorative-bar { background: #0a0a0a; }
+      #scene3 .decorative-bar { background: #FFD60A; }
+
+      .corner-label {
+        position: absolute;
+        top: 60px;
+        right: 80px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="9"
+      data-width="1920"
+      data-height="1080"
+    >
+      
+      <!-- SCENE 1 -->
+      <div id="scene1" class="scene">
+        <div class="corner-label" id="s1-label">001</div>
+        <div class="headline" id="s1-h1">HYPER</div>
+        <div class="headline" id="s1-h2">FRAMES</div>
+        <div class="subhead" id="s1-sub">PURE HTML VIDEO</div>
+        <div class="decorative-bar" id="s1-bar"></div>
+      </div>
+
+      <!-- SCENE 2 -->
+      <div id="scene2" class="scene">
+        <div class="corner-label" id="s2-label">002</div>
+        <div class="headline" id="s2-h1">MAXIMUM</div>
+        <div class="headline" id="s2-h2">IMPACT</div>
+        <div class="subhead" id="s2-sub">KINETIC TYPOGRAPHY</div>
+        <div class="decorative-bar" id="s2-bar"></div>
+      </div>
+
+      <!-- SCENE 3 -->
+      <div id="scene3" class="scene">
+        <div class="corner-label" id="s3-label">003</div>
+        <div class="headline" id="s3-h1">RENDER</div>
+        <div class="headline" id="s3-h2">ANYWHERE</div>
+        <div class="subhead" id="s3-sub">NO PLUGINS REQUIRED</div>
+        <div class="decorative-bar" id="s3-bar"></div>
+      </div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      
+      // Scene 1 Entrances (0s -> 3s)
+      tl.from("#s1-h1", { x: -400, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.2);
+      tl.from("#s1-h2", { x: 400, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.3);
+      tl.from("#s1-sub", { y: 50, opacity: 0, duration: 0.4, ease: "power3.out" }, 0.5);
+      tl.from("#s1-bar", { scaleX: 0, transformOrigin: "left", duration: 0.4, ease: "expo.out" }, 0.6);
+      tl.from("#s1-label", { opacity: 0, duration: 0.2 }, 0.1);
+
+      // Transition Scene 1 -> Scene 2 (Wipe / Push) at 3s
+      // "ALWAYS use transitions between scenes."
+      tl.set("#scene2", { opacity: 1 }, 3.0);
+      tl.from("#scene2", { x: 1920, duration: 0.5, ease: "power3.inOut" }, 3.0);
+      tl.to("#scene1", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 3.0);
+
+      // Scene 2 Entrances (Starts entering from 3.2s)
+      tl.from("#s2-h1", { scale: 2, opacity: 0, duration: 0.4, ease: "back.out(1.8)" }, 3.3);
+      tl.from("#s2-h2", { scale: 2, opacity: 0, duration: 0.4, ease: "back.out(1.8)" }, 3.4);
+      tl.from("#s2-sub", { y: -50, opacity: 0, duration: 0.4, ease: "power3.out" }, 3.6);
+      tl.from("#s2-bar", { scaleX: 0, transformOrigin: "left", duration: 0.4, ease: "expo.out" }, 3.7);
+      tl.from("#s2-label", { opacity: 0, duration: 0.2 }, 3.1);
+
+      // Transition Scene 2 -> Scene 3 (Slam / Scale Cover) at 6s
+      tl.set("#scene3", { opacity: 1 }, 6.0);
+      tl.from("#scene3", { y: 1080, duration: 0.6, ease: "back.out(1.2)" }, 6.0);
+      tl.to("#scene2", { y: -1080, duration: 0.6, ease: "back.out(1.2)" }, 6.0);
+
+      // Scene 3 Entrances (Starts entering from 6.3s)
+      tl.from("#s3-h1", { y: 150, opacity: 0, duration: 0.4, ease: "expo.out" }, 6.3);
+      tl.from("#s3-h2", { y: -150, opacity: 0, duration: 0.4, ease: "expo.out" }, 6.4);
+      tl.from("#s3-sub", { scale: 0.5, opacity: 0, duration: 0.4, ease: "back.out(1.5)" }, 6.6);
+      tl.from("#s3-bar", { scaleX: 0, transformOrigin: "left", duration: 0.4, ease: "expo.out" }, 6.7);
+      tl.from("#s3-label", { opacity: 0, duration: 0.2 }, 6.2);
+
+      // Final Hold (Ends at 9s)
+      
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
